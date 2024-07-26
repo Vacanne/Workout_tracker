@@ -35,6 +35,7 @@ parameters = {
 
 # Send request to Nutritionix API
 response = requests.post(EXERCISE_ENDPOINT, json=parameters, headers=headers)
+response.raise_for_status()
 result = response.json()
 
 # Get current date and time
@@ -58,5 +59,7 @@ for exercise in result["exercises"]:
         }
     }
 
+    # Send data to Google Sheets
     sheet_response = requests.post(SHEET_ENDPOINT, json=sheet_data, headers=bearer_headers)
+    sheet_response.raise_for_status()
     print(sheet_response.text)
